@@ -1,77 +1,70 @@
 /*
- *  The example in memplus.mtx is a large sparse matrix downloaded from the 
- *  matrix market (http://math.nist.gov/MatrixMarket/extreme.html) called memplus (rank: 17758; 
- *  126,150 nonzero entries) generated from the SPICE simulation of memory circuits. 
- *  Note that the mtx file format index is 1 based. 
- * 
- * 
+ * This files shows an example of solving Ax = b using the Jaconbian method
  *  
  */
-#include <iostream>
 #include <cmath>
+#include <iostream>
 #include <vector>
+
 #include "CRSmatrix.h"
 
-using namespace std;
-
 int main() {
-	/*
+    /*
 	 *  1. construct sparse matrix 
 	 *     there are three ways to initialize a matrix:
 	 *       - initialize from value, row point, and column index vectors in CRS format (0 based)
 	 *       - initialize from three files containing value, row point, and column index vectors in CRS format (0 based)
-	 *       - initialize from a mtx file in nomal sparse matrix format (1 based)
+	 *       - initialize an empty matrix of size r x c, then use method CRSmatrix::changeValue to add in values
 	 */
-	vector<double> value {-4,1,1, 4,-4,1, 1,-4,1, 1,-4,1, 1,1,-4};
-    vector<int> rowPtr {0, 3, 6, 9, 12, 15};
-    vector<int> colInd {0,1,4, 0,1,2, 1,2,3, 2,3,4, 0,3,4};
+    std::vector<double> value{-4, 1, 1, 4, -4, 1, 1, -4, 1, 1, -4, 1, 1, 1, -4};
+    std::vector<int> rowPtr{0, 3, 6, 9, 12, 15};
+    std::vector<int> colInd{0, 1, 4, 0, 1, 2, 1, 2, 3, 2, 3, 4, 0, 3, 4};
 
     CRSmatrix matrixFromVectors(value, rowPtr, colInd);
-	// CRSmatrix matrixFromMTX("../examples/memplus.mtx");
-	CRSmatrix matrixFrom3Files("../examples/value.txt", "../examples/rowPtr.txt", "../examples/colInd.txt");
+    CRSmatrix matrixFrom3Files("../examples/value.txt", "../examples/rowPtr.txt", "../examples/colInd.txt");
 
-	CRSmatrix A = matrixFrom3Files;
+    CRSmatrix A = matrixFrom3Files;
 
-	/*
+    /*
 	 *  2. initialize a vector b
 	 *  in this example, b=(1.0, 0, 0, …,0)^T, T is the number of columns in the matrix
 	 */
-    vector<double> b (A.getColSize());
+    std::vector<double> b(A.getColSize());
     for (unsigned int i = 0; i < b.size(); i++) {
-		b[i] = 0;
-	}
+        b[i] = 0;
+    }
     b[0] = 1;
 
-	/*
-	 *  Optional: print out A and b, do not print if A is too large
+    /*
+	 *  Optional: print out A and b
 	 */
-	std::cout << "b = [ ";
-	for (unsigned int i = 0; i < b.size(); i++) {
-		cout << b[i] << ", ";
-	}
-	std::cout << " ] " << endl;
+    std::cout << "b = [ ";
+    for (unsigned int i = 0; i < b.size(); i++) {
+        std::cout << b[i] << ", ";
+    }
+    std::cout << " ] " << std::endl;
 
-	std::cout << "A = " << endl;
-	A.printA();
+    std::cout << "A = " << std::endl;
+    A.printA();
 
-	/*
+    /*
 	 *  3. solve for Ax = b with the Jacobi method
 	 */
-	cout << "calculating Ax = b..." << endl;
-    vector<double> x (b.size());
+    std::cout << "calculating Ax = b..." << std::endl;
+    std::vector<double> x(b.size());
     x = Jacobi(A, b);
 
-	/*
+    /*
 	 *  Optional: print out the resulting x
 	 *
-	 *  Sanity check: result for the matrixFromVectors and matrixFrom3Files  
-     *  should be x = [ -0.37931 -0.408347 -0.116152 -0.0562609 -0.108892  ]
+	 *  Sanity check: result for the matrixFromVectors and matrixFrom3Files should be:
+     *  x = [ -0.37931 -0.408347 -0.116152 -0.0562609 -0.108892  ]
 	 */
-	cout << "x = [ ";
-	for (unsigned int i = 0; i < x.size(); i++) {
-		cout << x[i] << " ";
-	}
-	cout << " ] " << endl;
+    std::cout << "x = [ ";
+    for (unsigned int i = 0; i < x.size(); i++) {
+        std::cout << x[i] << " ";
+    }
+    std::cout << " ] " << std::endl;
 
     return 0;
 }

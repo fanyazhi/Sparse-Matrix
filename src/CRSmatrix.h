@@ -7,12 +7,10 @@
 #ifndef CRSMATRIX_H
 #define CRSMATRIX_H
 
-#include <iostream>
-#include <fstream>
 #include <cmath>
+#include <fstream>
+#include <iostream>
 #include <vector>
-
-using namespace std;
 
 /* sparse matrix structure using row-compressed storage
         Contents:
@@ -23,47 +21,45 @@ using namespace std;
                 colNum: number of columns
 */
 class CRSmatrix {
-protected:
-        vector<double> value;
-        vector<int> rowPtr;
-        vector<int> colInd;
-        int rowNum;
-        int colNum;
-public:
-        //CRSmatrix constructor with value, row point, and column index vectors
-        //Indices must be 0 based
-        CRSmatrix(vector<double> v, vector<int> r, vector<int> c);
+   private:
+    int rowNum;
+    int colNum;
 
-        //CRSmatrix constructor with local file paths containing the data
-        //Indices must be 0 based
-        CRSmatrix(string valueAddress, string rowPtrAddress, string colIndAddress);
+   public:
+    std::vector<double> value;
+    std::vector<int> rowPtr;
+    std::vector<int> colInd;
 
-        //CRSmatrix constructor with a mtx file
-        //Indices must be 1 based (mtx files should be 1 based)
-        CRSmatrix(string mtxFile);
+    //CRSmatrix constructor with value, row point, and column index vectors
+    //Indices must be 0 based
+    CRSmatrix(std::vector<double> v, std::vector<int> r, std::vector<int> c);
 
-        //CRSmatrix constructor with row number of column number, values will be filled with 0
-        CRSmatrix(int r, int c);
+    //CRSmatrix constructor with local file paths containing the data
+    //Indices must be 0 based
+    CRSmatrix(std::string valueAddress, std::string rowPtrAddress, std::string colIndAddress);
 
-        //get row and col size
-        int getRowSize ();
-        int getColSize ();
+    //CRSmatrix constructor with row number of column number, values will be filled with 0
+    CRSmatrix(int r, int c);
 
-        //return matrix value at [i][j]
-        double retrieveElement (int i, int j);
+    //get row and col size
+    int getRowSize();
+    int getColSize();
 
-        //insert value x at position [i][j]
-        void changeValue (double x, int i, int j);
+    //return matrix value at [i][j]
+    double retrieveElement(unsigned int i, unsigned int j);
 
-        //multiply matrix with a vector x and return the product
-        vector<double> productAx(vector<double> x);
+    //insert value x at position [i][j]
+    void changeValue(double x, unsigned int i, unsigned int j);
 
-        //delete value at position [i][j]
-        void deleteValue(int i, int j);
+    //multiply matrix with a vector x and return the product
+    std::vector<double> productAx(std::vector<double> x);
 
-        //print CRSmatrix
-        void printA();
-} ;
+    //delete value at position [i][j]
+    void deleteValue(unsigned int i, unsigned int j);
+
+    //print CRSmatrix
+    void printA();
+};
 
 /* finds the vector norm
         Parameters:
@@ -71,7 +67,7 @@ public:
         Return:
                 ||x||2
 */
-double vectorNorm(vector<double> x);
+double vectorNorm(std::vector<double> x);
 
 /* Jacobi CRS matrix solver for Ax = b
         Parameters:
@@ -80,6 +76,6 @@ double vectorNorm(vector<double> x);
         Return:
                 the solution to Ax = b
 */
-vector<double> Jacobi(CRSmatrix A, vector<double> b);
+std::vector<double> Jacobi(CRSmatrix A, std::vector<double> b);
 
-#endif //CRSMATRIX_H
+#endif  //CRSMATRIX_H
