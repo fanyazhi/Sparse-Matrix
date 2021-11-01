@@ -15,20 +15,66 @@ CRSmatrix::CRSmatrix(vector<double> v, vector<int> r, vector<int> c)
     colInd = c;
 
     //find total number of rows
-    rowNum = rowPtr.size()-1;
+    rowNum = rowPtr.size() - 1;
 
     //find total number of columns
     colNum = 0;
-    for (int i = 0; i <= colInd.size(); i++) {
-    if (colInd[i]>colNum) colNum = colInd[i];
+    for (int i = 0; i < colInd.size(); i++) {
+        if (colInd[i] > colNum) {
+            colNum = colInd[i];
+        }
     }
     colNum++;
 }
 
-CRSmatrix::CRSmatrix(int r, int c)
-{
-    rowNum = r;
-    colNum = c;
+CRSmatrix::CRSmatrix(string valueFilePath, string rowPtrFilePath, string colIndFilePath) {
+    //Read in files
+    ifstream rowFile, valueFile, colFile;
+
+    rowFile.open(rowPtrFilePath);
+    valueFile.open(valueFilePath);
+    colFile.open(colIndFilePath);
+
+    // Check if the file is open
+    if (!rowFile || !valueFile || !colFile) {
+        std::cout << "Unable to open file" << endl;
+        exit(1);
+    }
+
+    // Declare a variable to load the contents from the file
+    string line = "";
+
+    // Loading the value vector
+    string myValue;
+    while(valueFile.good()){
+        getline(valueFile,myValue,'\n');
+        //convert string value to double value
+        double myDoubleValue = atof(myValue.c_str());
+        value.push_back(myDoubleValue);
+    }
+
+    // Loading the row pointer vector
+    while (rowFile >> line) {
+        int rowNum = stoi(line);
+        rowPtr.push_back(rowNum);
+    }
+
+    // Loading the column indice vector
+    while (colFile >> line) {
+        int colIndex = stoi(line);
+        colInd.push_back(colIndex);
+    }
+
+    //find total number of rows
+    rowNum = rowPtr.size()-1;
+
+    //find total number of columns
+    colNum = 0;
+    for (int i = 0; i < colInd.size(); i++) {
+        if (colInd[i]>colNum) colNum = colInd[i];
+    }
+    colNum++;
+    std::cout << colNum << endl;
 }
 
 CRSmatrix::CRSmatrix(string mtxFilePath) {
@@ -37,7 +83,7 @@ CRSmatrix::CRSmatrix(string mtxFilePath) {
 
     // Check if the file is open
     if (!mtxFile) {
-        cout << "Unable to open file" << endl;
+        std::cout << "Unable to open file" << endl;
         exit(1);
     }
 
@@ -57,71 +103,37 @@ CRSmatrix::CRSmatrix(string mtxFilePath) {
             rowPtr.push_back(mtxRow-1); // row and col are 1 based in mtx files
             colInd.push_back(mtxCol-1);
             value.push_back(mtxValue);
-            cout << mtxRow-1 << " " << mtxCol-1 << " " << mtxValue << endl;
+            std::cout << mtxRow-1 << " " << mtxCol-1 << " " << mtxValue << endl;
         }
     }
 
     //find total number of rows
-    rowNum = rowPtr.size()-1;
+    rowNum = rowPtr.size() - 1;
 
     //find total number of columns
     colNum = 0;
     for (int i = 0; i < colInd.size(); i++) {
-        if (colInd[i] > colNum) colNum = colInd[i];
+        if (colInd[i] > colNum) {
+            colNum = colInd[i];
+        }
     }
     colNum++;
 
-    cout << rowNum << " " << colNum << endl;
+    std::cout << rowNum << " " << colNum << endl;
 }
 
-CRSmatrix::CRSmatrix(string valueAddress, string rowPtrAddress, string colIndAddress) {
-    //Read in files
-    ifstream rowFile, valueFile, colFile;
+CRSmatrix::CRSmatrix(int r, int c)
+{
+    rowNum = r;
+    colNum = c;
+}
 
-    rowFile.open(rowPtrAddress);
-    valueFile.open(valueAddress);
-    colFile.open(colIndAddress);
+int CRSmatrix::getRowSize () {
+    return rowNum;
+}
 
-    // Check if the file is open
-    if (!rowFile || !valueFile || !colFile) {
-        cout << "Unable to open file" << endl;
-        exit(1);
-    }
-
-    // Declare a variable to load the contents from the file
-    string line = "";
-
-    // Loading the value vector
-    string myValue;
-    while(valueFile.good()){
-        getline(valueFile,myValue,'\n');
-        //convert string value to double value
-        double myDoubleValue = atof(myValue.c_str());
-        value.push_back(myDoubleValue);
-    }
-
-    // Loading the row pointer vector
-    while (rowFile >> line) {
-        int rowNum = stoi(line);
-        rowPtr.push_back(rowNum-1);
-    }
-
-    // Loading the column indice vector
-    while (colFile >> line) {
-        int colIndex = stoi(line);
-        colInd.push_back(colIndex-1);
-    }
-
-    //find total number of rows
-    rowNum = rowPtr.size()-1;
-
-    //find total number of columns
-    colNum = 0;
-    for (int i = 0; i < colInd.size(); i++) {
-        if (colInd[i]>colNum) colNum = colInd[i];
-    }
-    colNum++;
-    cout << colNum << endl;
+int CRSmatrix::getColSize () {
+    return colNum;
 }
 
 double CRSmatrix::retrieveElement (int i, int j) {
@@ -175,9 +187,9 @@ void CRSmatrix::deleteValue(int i, int j){
 void CRSmatrix::printA(){
     for (int valI = 0; valI<rowNum; valI++){
         for (int valJ = 0; valJ<colNum; valJ++){
-            cout<<" "<<retrieveElement(valI, valJ);
+            std::cout<<" "<<retrieveElement(valI, valJ);
         }
-        cout<<endl;
+        std::cout<<endl;
     }
 }
 
