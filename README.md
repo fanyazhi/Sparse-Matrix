@@ -3,7 +3,7 @@ c++ compressed row storage sparse matrix ver 2.5
 
 The CRS (Compressed Row Storage) Sparse Matrix was originally a programing assignment for ECE 4960, one of the most useful course I took at Cornell in 2018. All assignments in this course were written from scratch. In the end of the course, I made some major modifications in CRSmatrix version 2.0 and used it in my final project (Spline Fitting, which is pretty cool). 
 
-In version 2.5, my goal is to add in examples, make the style better, the api easier to use, and add more documentation.
+In version 2.5, I added in examples, made the style better, and added more documentation.
 
 ## Features:
 * Sparse matrix structure with row-compressed storage: initializations, retrieve element, insert or change element, multiplication of sparse matrix with vector, print matrix
