@@ -1,7 +1,7 @@
 # Sparse-Matrix
 c++ compressed row storage sparse matrix ver 2.5
 
-The CRS (Compressed Row Storage) Sparse Matrix was originally a programing assignment for ECE 4960, one of the most useful course I took at Cornell in 2018. All assignments in this course were written from scratch. In the end of the course, I made major modifications in CRSmatrix version 2.0 and used it in my final project (Spline Fitting, which is pretty cool). 
+The CRS (Compressed Row Storage) Sparse Matrix was originally a programing assignment for ECE 4960. All assignments in this course were written from scratch. In the end of the course, I made major modifications in CRSmatrix version 2.0 and used it in my final project (Spline Fitting, which can be found here https://github.com/fanyazhi/Spline-Fitting). 
 
 In version 2.5, I added in examples, made the style better, and added more documentation.
 
