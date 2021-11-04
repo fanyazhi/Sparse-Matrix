@@ -1,5 +1,5 @@
 # Sparse-Matrix
-c++ compressed row storage sparse matrix ver 2.5
+c++ compressed row storage sparse matrix ver 2.5 (2021 Nov)
 
 The CRS (Compressed Row Storage) Sparse Matrix was originally a programing assignment for ECE 4960. All assignments in this course were written from scratch. In the end of the course, I made major modifications in CRSmatrix version 2.0 and used it in my final project (Spline Fitting, which can be found here https://github.com/fanyazhi/Spline-Fitting). 
 
@@ -30,4 +30,7 @@ colInd{0, 1, 0, 0, 1, 2} <br />
 **Jacobian Iterative Solver**
 
 When we are solving a large matrix A*x = b, direct methods involving fill-ins are too expensive. We instead need to use iterative solvers, such as the Jacobian Iterative Solver. Iterative solvers provide an approximation of the solution after a finite number of steps.
+
+## Reference:
+* The mathamatical formulas are from ECE 4960 lecture notes https://ocw.ece.cornell.edu/courses/ece-4960-computational-and-software-engineering/
 
